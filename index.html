@@ -3,212 +3,340 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0e1824" />
-  <meta name="description" content="Help train an automated waste segregation system by capturing six images of one waste item." />
+  <meta name="theme-color" content="#0b151f" />
+  <meta name="description" content="Help WasteVision learn to recognize waste by submitting six photographs of one item for review." />
   <title>WasteVision | Community Image Collection</title>
   <style>
-    :root { color-scheme: dark; --bg:#0b141e; --surface:#152332; --surface2:#1b2c3e; --stroke:#324455; --text:#eef7f6; --muted:#a4b7bd; --accent:#72e6b4; --accent-deep:#123d32; --danger:#ffc3b9; }
+    :root { color-scheme:dark; --bg:#0a141e; --surface:#142433; --surface2:#1a3040; --stroke:#334c5a; --text:#ebf7f5; --muted:#a8bdc2; --accent:#74e6b4; --accentDark:#0b342c; --danger:#ffd1c6; --warning:#ffdc91; }
     * { box-sizing:border-box; }
-    body { margin:0; min-height:100vh; background:radial-gradient(circle at 90% 0%,#1b3b46 0%,transparent 38%), var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; line-height:1.45; }
-    button,input,select { font:inherit; }
-    button { cursor:pointer; }
-    .shell { max-width:1040px; margin:0 auto; padding:22px 18px 70px; }
-    .nav { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:46px; }
-    .brand { font-weight:800; letter-spacing:-.04em; font-size:1.25rem; }
-    .brand span { color:var(--accent); }
-    .pill { border:1px solid #477869; color:#a8f6d1; background:#18382f; border-radius:99px; padding:6px 11px; font-size:.78rem; font-weight:700; }
-    .hero { margin-bottom:28px; }
-    .eyebrow { color:var(--accent); font-weight:800; letter-spacing:.12em; text-transform:uppercase; font-size:.75rem; }
-    h1 { font-size:clamp(2.1rem,6vw,3.9rem); line-height:1.08; letter-spacing:-.055em; margin:9px 0 14px; max-width:720px; }
-    .intro { max-width:665px; font-size:1.04rem; color:var(--muted); margin:0; }
-    .layout { display:grid; grid-template-columns:minmax(0,1fr) 280px; align-items:start; gap:18px; }
-    .panel { background:rgba(21,35,50,.95); border:1px solid var(--stroke); border-radius:20px; padding:25px; box-shadow:0 13px 30px #030d1730; }
-    .section-head { display:flex; align-items:center; justify-content:space-between; gap:15px; margin:0 0 17px; }
-    h2 { margin:0; font-size:1.26rem; letter-spacing:-.025em; }
-    .step { color:var(--accent); font-size:.82rem; font-weight:700; }
-    .helper { font-size:.89rem; color:var(--muted); margin:6px 0 20px; }
-    .inputs { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
-    label.field { display:block; color:#d4e3e6; font-weight:650; font-size:.89rem; }
-    .field input,.field select { display:block; margin-top:8px; width:100%; min-width:0; min-height:48px; border:1px solid #536474; border-radius:11px; outline:none; background:#0c1925; color:var(--text); padding:10px 12px; }
-    .field input:focus,.field select:focus { border-color:var(--accent); box-shadow:0 0 0 3px #72e6b427; }
-    hr { border:0; height:1px; background:var(--stroke); margin:26px 0; }
-    .progress-row { display:flex; justify-content:space-between; gap:12px; align-items:center; font-size:.85rem; color:var(--muted); margin:10px 0 8px; }
+    body { margin:0; min-height:100vh; background:radial-gradient(ellipse at 85% 0%,#1b3a45 0%,transparent 40%),var(--bg); color:var(--text); font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
+    button,input,select { font:inherit; } button { cursor:pointer; }
+    .shell { max-width:1080px; padding:23px 18px 65px; margin:auto; }
+    header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:40px; }
+    .brand { font-weight:800; font-size:1.35rem; letter-spacing:-.045em; } .brand span { color:var(--accent); }
+    .pill { border:1px solid #497665; border-radius:99px; color:#c0f8dc; background:#18392f; padding:6px 12px; font-size:.75rem; font-weight:800; white-space:nowrap; }
+    .eyebrow { color:var(--accent); font-size:.76rem; text-transform:uppercase; letter-spacing:.12em; font-weight:800; }
+    h1 { font-size:clamp(2.05rem,5.8vw,3.6rem); max-width:735px; margin:8px 0 15px; line-height:1.12; letter-spacing:-.05em; }
+    .intro { max-width:720px; color:var(--muted); margin:0 0 27px; font-size:1rem; }
+    .layout { display:grid; grid-template-columns:minmax(0,1fr) 285px; align-items:start; gap:19px; }
+    .panel { background:rgba(20,36,51,.96); border:1px solid var(--stroke); border-radius:20px; padding:25px; box-shadow:0 12px 36px #06101a40; }
+    .section-head { display:flex; gap:10px; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    h2 { font-size:1.27rem; line-height:1.25; letter-spacing:-.025em; margin:0; } h3 { font-size:1rem; margin:0 0 11px; }
+    .step { font-weight:800; color:var(--accent); font-size:.78rem; white-space:nowrap; }
+    .status { border-radius:12px; padding:12px 14px; font-size:.88rem; margin-bottom:25px; border:1px solid #54736a; background:#193b34; color:#c5f3df; }
+    .status.warn { border-color:#927548; background:#3c3225; color:#ffdfaa; }
+    .status.bad { border-color:#98675f; background:#3e2b2e; color:#ffd2cc; }
+    .fields { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+    .field { display:block; font-size:.88rem; color:#d8e6e7; font-weight:700; }
+    .field input,.field select { margin-top:8px; display:block; width:100%; min-height:49px; border:1px solid #536978; border-radius:11px; background:#0e1b28; color:var(--text); padding:10px 12px; outline:none; }
+    .field input:focus,.field select:focus { border-color:var(--accent); box-shadow:0 0 0 3px #74e6b42b; }
+    hr { border:none; border-top:1px solid var(--stroke); margin:27px 0; }
+    .helper { font-size:.89rem; color:var(--muted); margin:0 0 18px; }
+    .progress-head { display:flex; align-items:center; justify-content:space-between; gap:12px; color:var(--muted); font-size:.83rem; margin:8px 0; }
     #progressCount { color:var(--accent); font-weight:800; }
-    .track { height:8px; border-radius:100px; overflow:hidden; background:#334353; margin-bottom:19px; }
-    .fill { height:100%; width:0%; background:linear-gradient(90deg,#36a993,var(--accent)); border-radius:100px; transition:width .2s; }
+    .track { background:#324a55; height:8px; border-radius:90px; overflow:hidden; margin-bottom:18px; }
+    .fill { width:0; height:100%; background:linear-gradient(90deg,#3ea98d,var(--accent)); transition:width .2s; }
     .angles { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
-    .angle { position:relative; min-width:0; border:1px dashed #60717f; background:#10202d; border-radius:13px; padding:9px; min-height:161px; display:flex; flex-direction:column; text-align:left; }
-    .angle.filled { border:1px solid #55b794; background:#14372f; }
-    .thumbnail { width:100%; height:92px; border-radius:9px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#203344; color:#77919b; }
-    .thumbnail svg { width:26px; height:26px; }
-    .thumbnail img { width:100%; height:100%; object-fit:cover; }
-    .angle-label { display:flex; gap:6px; align-items:center; justify-content:space-between; color:#ecf7f5; font-weight:700; font-size:.8rem; margin:9px 1px 0; }
-    .status-icon { color:var(--accent); display:none; }
-    .filled .status-icon { display:inline; }
-    .angle input { display:none; }
-    .action { border:0; display:block; width:100%; color:#092a23; background:var(--accent); font-weight:800; border-radius:12px; padding:15px; min-height:50px; margin-top:22px; }
-    .action:hover { background:#a0f0cf; }
-    .secondary { border:1px solid #536474; color:var(--text); background:transparent; padding:10px 14px; font-weight:650; border-radius:10px; }
-    .privacy { font-size:.79rem; color:var(--muted); margin:13px 0 0; }
-    .side-title { font-size:1rem; margin-bottom:12px; }
-    .side-list { padding-left:19px; margin:0; font-size:.9rem; color:#ccdadc; }
-    .side-list li { margin:0 0 13px; }
-    .note { margin-top:20px; padding:15px; background:#233a35; border:1px solid #4b7664; border-radius:13px; font-size:.86rem; color:#c3efda; }
-    .result { margin-top:20px; background:#10392e; border:1px solid #63bb97; padding:17px; border-radius:13px; }
-    .result h3 { margin:0 0 6px; color:#9af3c8; }
-    .result p { margin:0 0 11px; color:#d1f5e3; }
-    .result[hidden],.error[hidden] { display:none; }
-    .error { margin:15px 0 0; color:var(--danger); font-size:.9rem; font-weight:650; }
-    footer { font-size:.82rem; color:#8ea5ac; text-align:center; margin-top:28px; }
-    @media (max-width:760px) { .nav { margin-bottom:32px; } .layout { grid-template-columns:1fr; } .panel { padding:18px; } .angles { grid-template-columns:repeat(2,minmax(0,1fr)); } .inputs { grid-template-columns:1fr; } .side { order:2; } }
-    @media (max-width:355px) { .angles { gap:8px; } .angle { min-height:145px; } }
+    .angle { min-width:0; min-height:162px; cursor:pointer; display:flex; flex-direction:column; background:#102332; border:1px dashed #647a87; border-radius:14px; padding:9px; }
+    .angle.filled { background:#173b32; border:1px solid #67c29e; }
+    .angle:focus-within { outline:3px solid #74e6b488; outline-offset:3px; }
+    .thumbnail { height:96px; background:#213b4b; border-radius:9px; overflow:hidden; display:flex; align-items:center; justify-content:center; color:#90aab3; }
+    .thumbnail svg { width:32px; height:32px; } .thumbnail img { width:100%; height:100%; object-fit:cover; }
+    .angle-name { display:flex; align-items:center; gap:6px; justify-content:space-between; font-size:.8rem; font-weight:800; padding:9px 2px 0; }
+    .check { color:var(--accent); display:none; } .filled .check { display:inline; }
+    .upload-input { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); opacity:0; }
+    .consent { display:flex; align-items:flex-start; gap:11px; font-size:.83rem; color:#d8e8e5; margin:22px 0 2px; }
+    .consent input { width:19px; height:19px; flex:0 0 auto; accent-color:#74e6b4; }
+    .action { margin-top:17px; background:var(--accent); color:#09281f; border:0; border-radius:11px; font-weight:850; padding:15px 18px; width:100%; min-height:51px; }
+    .action:hover:enabled { background:#9af1c9; } .action:disabled { opacity:.6; cursor:not-allowed; }
+    .secondary { background:transparent; color:var(--text); border:1px solid #729184; border-radius:10px; padding:10px 14px; font-weight:700; }
+    .message { margin-top:17px; border:1px solid #669477; background:#183c31; border-radius:12px; padding:15px; color:#d3f6e0; font-size:.88rem; overflow-wrap:anywhere; }
+    .message.error { border-color:#b17769; background:#422c31; color:#ffded8; } .message[hidden] { display:none; }
+    .result { margin-top:18px; border:1px solid #66b594; background:#123b2f; border-radius:13px; padding:18px; } .result[hidden] { display:none; }
+    .result h3 { color:#9df0c7; } .result p { margin:6px 0 14px; font-size:.92rem; }
+    .privacy { color:var(--muted); font-size:.78rem; margin:13px 0 0; }
+    .side-list { padding-left:20px; margin:0; font-size:.89rem; color:#d2e0e0; } .side-list li { margin-bottom:13px; }
+    .aside-note { border:1px solid #526c66; background:#213a36; border-radius:12px; padding:13px; margin-top:22px; font-size:.83rem; color:#c6eee0; }
+    footer { margin-top:30px; text-align:center; color:#8ea7b1; font-size:.82rem; }
+    [hidden] { display:none!important; }
+    @media(max-width:800px) { .layout { grid-template-columns:1fr; } .side { order:2; } .panel { padding:18px; } header { margin-bottom:29px; } }
+    @media(max-width:500px) { .fields { grid-template-columns:1fr; } .angles { grid-template-columns:repeat(2,minmax(0,1fr)); } h1 { font-size:2.05rem; } }
   </style>
 </head>
 <body>
   <div class="shell">
-    <header class="nav">
-      <div class="brand">Waste<span>Vision</span> <span aria-hidden="true">✦</span></div>
-      <div class="pill">Prototype v1</div>
-    </header>
-
-    <section class="hero">
+    <header><div class="brand">Waste<span>Vision</span> ✦</div><div class="pill">Cloud uploads • v2</div></header>
+    <section>
       <div class="eyebrow">Community-powered AI research</div>
       <h1>Help our machine learn to recognize waste.</h1>
-      <p class="intro">Choose one item, name it, and photograph the <strong>same piece of trash</strong> from six angles. Together, we'll build a better dataset for an automated waste segregation machine.</p>
+      <p class="intro">Photograph one clean, dry waste item from six different angles. Your photos will be securely submitted for researcher review before they are considered for AI training.</p>
     </section>
-
     <div class="layout">
       <main class="panel">
-        <div class="section-head"><h2>Describe your trash</h2><span class="step">STEP 01</span></div>
-        <div class="inputs">
+        <div id="backendStatus" class="status warn" role="status">Checking upload configuration…</div>
+        <div class="section-head"><h2>Describe your item</h2><span class="step">STEP 01</span></div>
+        <div class="fields">
           <label class="field" for="itemName">Object name
-            <input id="itemName" type="text" maxlength="70" autocomplete="off" placeholder="e.g. Empty water bottle" />
+            <input id="itemName" type="text" minlength="2" maxlength="80" placeholder="e.g. Empty plastic water bottle" autocomplete="off" />
           </label>
           <label class="field" for="category">Waste category
             <select id="category">
-              <option value="">Select category</option>
-              <option value="Plastic">Plastic</option>
-              <option value="Paper">Paper</option>
-              <option value="Metal">Metal</option>
-              <option value="Residual">Residual / Other</option>
+              <option value="">Choose category</option>
+              <option value="plastic">Plastic</option>
+              <option value="paper">Paper</option>
+              <option value="metal">Metal</option>
+              <option value="residual">Residual / Other</option>
             </select>
           </label>
         </div>
         <hr />
-        <div class="section-head"><h2>Capture six angles</h2><span class="step">STEP 02</span></div>
-        <p class="helper">Tap each box to use your camera or select a photo. Keep the same item in all six pictures. Avoid showing people's faces or personal information.</p>
-        <div class="progress-row"><span>Photo set progress</span><span id="progressCount">0 / 6 photos</span></div>
-        <div class="track" role="progressbar" aria-label="Photo set progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" id="progressTrack"><div id="progressFill" class="fill"></div></div>
-        <div class="angles" id="angles"></div>
-        <p class="error" id="error" role="alert" hidden></p>
-        <button class="action" id="reviewBtn" type="button">Review my photo set →</button>
-        <div class="result" id="result" aria-live="polite" hidden>
-          <h3>✓ Your photo set is ready!</h3>
+        <div class="section-head"><h2>Capture all six views</h2><span class="step">STEP 02</span></div>
+        <p class="helper">Tap an angle to take a photo or choose a file. Use the <strong>same physical item</strong> for all six photos. Choose a different angle each time.</p>
+        <div class="progress-head"><span>Photos ready</span><span id="progressCount">0 / 6</span></div>
+        <div class="track" role="progressbar" id="progressTrack" aria-label="Captured photographs" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><div id="progressFill" class="fill"></div></div>
+        <div id="angles" class="angles"></div>
+        <label class="consent"><input id="consent" type="checkbox" /><span>I own these photos or have permission to submit them, and I agree that they may be used for the WasteVision research dataset and AI model training after approval. I will not include faces, names, addresses, or other personal information.</span></label>
+        <div id="message" class="message" role="status" aria-live="polite" hidden></div>
+        <button class="action" id="uploadBtn" type="button">Submit six photos for review →</button>
+        <div class="result" id="result" hidden aria-live="polite">
+          <h3>✓ Photos submitted for review</h3>
           <p id="resultText"></p>
-          <p><strong>Prototype only:</strong> Your photos have NOT been uploaded or saved. Cloud submission will be added in Step 2.</p>
-          <button class="secondary" id="resetBtn" type="button">Start another item</button>
+          <p><strong>Status: Pending.</strong> A researcher will check the labels and image quality before using the photos in the AI dataset.</p>
+          <button class="secondary" id="resetBtn" type="button">Submit another item</button>
         </div>
-        <p class="privacy">🔒 This first version previews images only on your device. No images are sent to a server.</p>
+        <p class="privacy">Your photos are stored in a private Supabase bucket, not directly inside GitHub. No public photo gallery is enabled. Please do not upload unsafe or personal content.</p>
       </main>
-
       <aside class="panel side">
-        <h2 class="side-title">For better training photos</h2>
+        <h3>How to take good training photos</h3>
         <ol class="side-list">
-          <li>Photograph <strong>one physical item</strong> per set.</li>
-          <li>Show the entire object, without cutting it off.</li>
-          <li>Take front, back, left, right, top, and angled views.</li>
-          <li>Use clear lighting and an uncluttered background.</li>
-          <li>For now, use clean and dry items. Don't handle sharp or hazardous waste.</li>
+          <li>Use one whole item (not a pile of different materials).</li>
+          <li>Capture front, back, left, right, top, and 45° views.</li>
+          <li>Keep the item fully visible in every shot.</li>
+          <li>Take some images with different lighting and backgrounds.</li>
+          <li>Use only clean, dry, non-hazardous items. Never handle sharp waste.</li>
+          <li>Do not photograph people, identification cards, or private spaces.</li>
         </ol>
-        <div class="note"><strong>Next step:</strong> We'll connect secure image storage, add an approval queue, and make the Submit button actually save the set for AI training.</div>
+        <div class="aside-note"><strong>Research workflow:</strong> Each set receives a <strong>pending</strong> status. Only the project owner can review submissions in the Supabase Dashboard. Uploaded photos do <strong>not</strong> retrain the model automatically.</div>
       </aside>
     </div>
     <footer>WasteVision — AI-assisted waste segregation research prototype</footer>
   </div>
 
-  <script>
-    'use strict';
-    const views = [
-      ['front','Front view'], ['back','Back view'],
-      ['left','Left side'], ['right','Right side'],
-      ['top','Top view'], ['angled','45° angle']
-    ];
-    const selected = Object.fromEntries(views.map(([key]) => [key, null]));
-    const objectUrls = Object.fromEntries(views.map(([key]) => [key, null]));
-    const anglesContainer = document.getElementById('angles');
-    const error = document.getElementById('error');
-    const result = document.getElementById('result');
-    const cameraSvg = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4H9L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-3-3z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-    function updateProgress() {
-      const count = views.filter(([key]) => Boolean(selected[key])).length;
-      document.getElementById('progressCount').textContent = `${count} / 6 photos`;
-      document.getElementById('progressFill').style.width = `${count / 6 * 100}%`;
-      document.getElementById('progressTrack').setAttribute('aria-valuenow', String(count));
+    // ================================================================
+    // WasteVision Supabase project settings.
+    // Publishable keys are safe for public browser apps when Row Level Security
+    // policies are correctly configured. Never put secret or service-role keys here.
+    // ================================================================
+    const SUPABASE_URL = 'https://aumbtzhtamegwdgkhhok.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_kyzqIYmsQGOvQbyADtZ97Q_IIxdy94D';
+    // ================================================================
+
+    const photoAngles = [
+      { id:'front', label:'Front' }, { id:'back', label:'Back' },
+      { id:'left', label:'Left side' }, { id:'right', label:'Right side' },
+      { id:'top', label:'Top' }, { id:'angled', label:'45° angle' }
+    ];
+    const photos = Object.fromEntries(photoAngles.map(a => [a.id,null]));
+    const previewUrls = Object.fromEntries(photoAngles.map(a => [a.id,null]));
+    const els = {
+      status: document.getElementById('backendStatus'), name: document.getElementById('itemName'),
+      category: document.getElementById('category'), angles: document.getElementById('angles'),
+      consent: document.getElementById('consent'), message: document.getElementById('message'),
+      upload: document.getElementById('uploadBtn'), result: document.getElementById('result'),
+      resultText: document.getElementById('resultText'), reset: document.getElementById('resetBtn')
+    };
+    const configured = /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(SUPABASE_URL.trim())
+      && /^(sb_publishable_|eyJ)/.test(SUPABASE_PUBLISHABLE_KEY.trim());
+    const client = configured ? createClient(SUPABASE_URL.trim(), SUPABASE_PUBLISHABLE_KEY.trim()) : null;
+    let preparing = 0;
+    let busy = false;
+    // Keeps the submission ID and successful uploads so an interrupted upload can be retried.
+    // (A full browser refresh may still leave a partial pending submission to review.)
+    let attempt = null;
+    const cameraSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4H9L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-3-3z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+
+    if (!configured) {
+      els.status.className='status warn';
+      els.status.textContent='Setup required: Add your Supabase Project URL and publishable key inside index.html to enable uploads. You can still preview photos.';
+    } else {
+      els.status.className='status';
+      els.status.textContent='Cloud upload is configured. Submit one item to test your Supabase connection.';
     }
-    function clearError() { error.hidden = true; error.textContent = ''; }
-    function invalidateReview() { result.hidden = true; clearError(); }
-    function buildAngle([key, label]) {
-      const card = document.createElement('div');
-      card.className = 'angle';
-      const preview = document.createElement('div');
-      preview.className = 'thumbnail';
-      preview.innerHTML = cameraSvg;
-      const labelRow = document.createElement('div');
-      labelRow.className = 'angle-label';
-      const caption = document.createElement('span');
-      caption.textContent = label;
-      const check = document.createElement('span');
-      check.textContent = '✓'; check.className = 'status-icon';
-      labelRow.append(caption, check);
-      const input = document.createElement('input');
-      input.type = 'file'; input.accept = 'image/*'; input.setAttribute('capture', 'environment');
-      input.setAttribute('aria-label', `Take or select a photo for ${label}`);
-      input.addEventListener('change', () => {
-        const file = input.files && input.files[0];
-        if (!file) return;
-        if (!file.type.startsWith('image/')) { showError('Please select an image file.'); input.value=''; return; }
-        if (file.size > 10 * 1024 * 1024) { showError('Each photo must be 10 MB or smaller.'); input.value=''; return; }
-        if (objectUrls[key]) URL.revokeObjectURL(objectUrls[key]);
-        selected[key] = file;
-        objectUrls[key] = URL.createObjectURL(file);
-        const img = document.createElement('img');
-        img.src = objectUrls[key]; img.alt = `Preview of ${label}`;
-        preview.replaceChildren(img);
-        card.classList.add('filled');
-        invalidateReview(); updateProgress();
+
+    function report(text, isError=false) {
+      els.message.textContent = text;
+      els.message.className = isError ? 'message error' : 'message';
+      els.message.hidden = false;
+    }
+    function clearReport(){ els.message.textContent=''; els.message.hidden=true; }
+    function setLocked(locked){
+      els.name.disabled=locked; els.category.disabled=locked; els.consent.disabled=locked;
+      els.angles.querySelectorAll('input[type=file]').forEach(input=>{input.disabled=locked;});
+    }
+    function setBusy(state){ busy=state; els.upload.disabled=state||preparing>0; els.upload.textContent=state?'Uploading… please wait':'Submit six photos for review →'; }
+    function updateProgress(){
+      const count=photoAngles.filter(a=>Boolean(photos[a.id])).length;
+      document.getElementById('progressCount').textContent=`${count} / 6`;
+      document.getElementById('progressFill').style.width=`${(count/6)*100}%`;
+      document.getElementById('progressTrack').setAttribute('aria-valuenow',String(count));
+    }
+    function clearPreviews(){
+      for (const angle of photoAngles){
+        if (previewUrls[angle.id]) URL.revokeObjectURL(previewUrls[angle.id]);
+        previewUrls[angle.id]=null; photos[angle.id]=null;
+      }
+    }
+    function makeAngleCard(angle){
+      const label=document.createElement('label');
+      label.className='angle';
+      const thumb=document.createElement('div'); thumb.className='thumbnail'; thumb.innerHTML=cameraSvg;
+      const caption=document.createElement('div'); caption.className='angle-name';
+      const name=document.createElement('span'); name.textContent=angle.label;
+      const check=document.createElement('span'); check.className='check'; check.textContent='✓';
+      caption.append(name,check);
+      const input=document.createElement('input');
+      input.type='file'; input.accept='image/jpeg,image/png,image/webp'; input.capture='environment';
+      input.className='upload-input'; input.setAttribute('aria-label',`Choose photo for ${angle.label}`);
+      input.addEventListener('change',async()=>{
+        const source=input.files?.[0];
+        if (!source) return;
+        if (busy||attempt){ report('An upload has already begun. Please retry the upload before changing the photos.',true); return; }
+        preparing++; els.upload.disabled=true;
+        report(`Preparing ${angle.label} photo…`);
+        try {
+          const optimized=await optimizePhoto(source);
+          if (previewUrls[angle.id]) URL.revokeObjectURL(previewUrls[angle.id]);
+          photos[angle.id]=optimized;
+          previewUrls[angle.id]=URL.createObjectURL(optimized);
+          const img=document.createElement('img'); img.src=previewUrls[angle.id]; img.alt=`${angle.label} photo preview`;
+          thumb.replaceChildren(img); label.classList.add('filled'); updateProgress();
+          clearReport();
+        } catch(e){ report(`${angle.label}: ${e.message}`,true); }
+        finally { input.value=''; preparing--; if(!busy && preparing===0) els.upload.disabled=false; }
       });
-      card.addEventListener('click', (event) => { if (event.target !== input) input.click(); });
-      card.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); input.click(); } });
-      card.tabIndex = 0; card.setAttribute('role', 'button');
-      card.setAttribute('aria-label', `Choose image for ${label}`);
-      card.append(preview, labelRow, input);
-      anglesContainer.append(card);
+      label.append(thumb,caption,input);
+      els.angles.append(label);
     }
-    function showError(message) { error.textContent = message; error.hidden = false; result.hidden = true; }
-    views.forEach(buildAngle);
-    document.getElementById('itemName').addEventListener('input', invalidateReview);
-    document.getElementById('category').addEventListener('change', invalidateReview);
-    document.getElementById('reviewBtn').addEventListener('click', () => {
-      clearError();
-      const name = document.getElementById('itemName').value.trim();
-      const category = document.getElementById('category').value;
-      if (name.length < 2) { showError('Enter the name of the trash item first.'); document.getElementById('itemName').focus(); return; }
-      if (!category) { showError('Select a waste category first.'); document.getElementById('category').focus(); return; }
-      const missing = views.filter(([key]) => !selected[key]).map(([,label])=>label);
-      if (missing.length) { showError(`Please add the missing photo(s): ${missing.join(', ')}.`); return; }
-      document.getElementById('resultText').textContent = `${name} • ${category} • 6 different camera angles.`;
-      result.hidden = false;
-      result.scrollIntoView({behavior:'smooth',block:'nearest'});
+    photoAngles.forEach(makeAngleCard);
+
+    function loadPhoto(file){
+      return new Promise((resolve,reject)=>{
+        const url=URL.createObjectURL(file), img=new Image();
+        img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};
+        img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('This image format could not be opened. Use a JPEG, PNG, or WebP photo.'));};
+        img.src=url;
+      });
+    }
+    function makeJpeg(canvas,quality){
+      return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('Could not prepare this photograph.')),'image/jpeg',quality));
+    }
+    async function optimizePhoto(file){
+      if (!['image/jpeg','image/png','image/webp'].includes(file.type)) throw new Error('Use a JPEG, PNG, or WebP image. HEIC photos should be converted to JPEG first.');
+      if (file.size>25*1024*1024) throw new Error('Original photo is too large (25 MB maximum).');
+      const img=await loadPhoto(file);
+      if (!img.naturalWidth||!img.naturalHeight) throw new Error('Image appears to be empty.');
+      const scale=Math.min(1,1600/Math.max(img.naturalWidth,img.naturalHeight));
+      const canvas=document.createElement('canvas');
+      canvas.width=Math.max(1,Math.round(img.naturalWidth*scale));
+      canvas.height=Math.max(1,Math.round(img.naturalHeight*scale));
+      const ctx=canvas.getContext('2d');
+      if (!ctx) throw new Error('Browser could not process this image.');
+      ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      let blob=await makeJpeg(canvas,.86);
+      if(blob.size>4.5*1024*1024) blob=await makeJpeg(canvas,.65);
+      if(blob.size>4.5*1024*1024) throw new Error('The photo is still too large after compression. Choose a smaller image.');
+      return new File([blob],`${crypto.randomUUID()}.jpg`,{type:'image/jpeg'});
+    }
+
+    async function anonymousUserId(){
+      const { data:sessionData, error:sessionError }=await client.auth.getSession();
+      if(sessionError) throw sessionError;
+      if(sessionData.session?.user?.id) return sessionData.session.user.id;
+      const { data, error }=await client.auth.signInAnonymously();
+      if(error) throw error;
+      if(!data.user?.id) throw new Error('Anonymous sign-in did not return a user.');
+      return data.user.id;
+    }
+    function explainError(error){
+      const detail=error?.message||String(error);
+      if(/anonymous|sign.?in.*disabled|not allowed/i.test(detail)) return 'Anonymous sign-ins may be disabled. Enable Anonymous Sign-Ins in Supabase Authentication. Details: '+detail;
+      if(/bucket.*not found|not found.*bucket/i.test(detail)) return 'The private Storage bucket "waste-images" was not found. Create it in Supabase Storage. Details: '+detail;
+      if(/row.level security|violates.*policy|permission denied|403|42501/i.test(detail)) return 'Supabase blocked the upload using an access policy. Check that the Step 2 SQL was run and the bucket is private. Details: '+detail;
+      if(/failed to fetch|network/i.test(detail)) return 'Connection failed. Check your internet, Project URL, and browser network permissions. Details: '+detail;
+      return detail;
+    }
+
+    els.upload.addEventListener('click',async()=>{
+      if(busy||preparing>0) return;
+      clearReport();
+      if(!configured){ report('Add your Project URL and publishable API key to index.html first. Never use the secret/service_role key.',true); return; }
+      const name=els.name.value.trim(),category=els.category.value;
+      if(name.length<2||name.length>80){report('Enter an object name between 2 and 80 characters.',true);els.name.focus();return;}
+      if(!['plastic','paper','metal','residual'].includes(category)){report('Select a waste category.',true);els.category.focus();return;}
+      const missing=photoAngles.filter(a=>!photos[a.id]).map(a=>a.label);
+      if(missing.length){report(`Please add these photos: ${missing.join(', ')}.`,true);return;}
+      if(!els.consent.checked){report('Please confirm you have permission to submit these photos for research.',true);return;}
+      setBusy(true);
+      try {
+        if(!attempt){
+          report('Signing in securely…');
+          const userId=await anonymousUserId();
+          report('Creating your pending submission…');
+          const { data, error }=await client.from('waste_submissions').insert({
+            contributor_id:userId,item_name:name,category,status:'pending'
+          }).select('id').single();
+          if(error) throw error;
+          attempt={userId,submissionId:data.id,stages:{}};
+          // Freeze labels and files if a partial upload must be retried.
+          setLocked(true);
+        }
+        for(let i=0;i<photoAngles.length;i++){
+          const angle=photoAngles[i];
+          let stage=attempt.stages[angle.id];
+          if(!stage){
+            stage={path:`${attempt.userId}/${attempt.submissionId}/${angle.id}-${crypto.randomUUID()}.jpg`,stored:false,recorded:false};
+            attempt.stages[angle.id]=stage;
+          }
+          if(stage.recorded) continue;
+          report(`Uploading photo ${i+1} of 6 (${angle.label})… Please keep this page open.`);
+          if(!stage.stored){
+            const {error}=await client.storage.from('waste-images').upload(stage.path,photos[angle.id],{
+              contentType:'image/jpeg',cacheControl:'3600',upsert:false
+            });
+            if(error) throw error;
+            stage.stored=true;
+          }
+          const {error}=await client.from('waste_photos').insert({
+            submission_id:attempt.submissionId,angle:angle.id,storage_path:stage.path
+          });
+          if(error) throw error;
+          stage.recorded=true;
+        }
+        report('All six photos were saved successfully. Thank you!');
+        els.resultText.textContent=`${name} • ${category} • 6 photos saved. Reference: ${attempt.submissionId}`;
+        els.result.hidden=false;
+        els.upload.hidden=true;
+        els.result.scrollIntoView({behavior:'smooth',block:'nearest'});
+      }catch(error){
+        console.error('WasteVision submission error:',error);
+        report(`Upload did not finish. ${explainError(error)} ${attempt?'Press the Submit button again to retry the remaining photos.':''}`,true);
+      }finally {setBusy(false);}
     });
-    document.getElementById('resetBtn').addEventListener('click', () => {
-      for (const [key] of views) { if (objectUrls[key]) URL.revokeObjectURL(objectUrls[key]); objectUrls[key] = null; selected[key] = null; }
-      anglesContainer.replaceChildren(); views.forEach(buildAngle);
-      document.getElementById('itemName').value=''; document.getElementById('category').value='';
-      result.hidden = true; clearError(); updateProgress();
-      document.getElementById('itemName').focus();
+
+    els.reset.addEventListener('click',()=>{
+      if(busy) return;
+      attempt=null;
+      clearPreviews(); els.angles.replaceChildren(); photoAngles.forEach(makeAngleCard);
+      els.name.value=''; els.category.value=''; els.consent.checked=false;
+      setLocked(false); clearReport(); updateProgress();
+      els.result.hidden=true; els.upload.hidden=false; els.name.focus();
     });
-    window.addEventListener('pagehide',()=>{ for(const url of Object.values(objectUrls)) if(url) URL.revokeObjectURL(url); });
+    window.addEventListener('pagehide',()=>{
+      for(const url of Object.values(previewUrls)) if(url) URL.revokeObjectURL(url);
+    });
   </script>
 </body>
 </html>
