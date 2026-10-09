@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0e1824" />
+  <meta name="description" content="Help train an automated waste segregation system by capturing six images of one waste item." />
+  <title>WasteVision | Community Image Collection</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b141e; --surface:#152332; --surface2:#1b2c3e; --stroke:#324455; --text:#eef7f6; --muted:#a4b7bd; --accent:#72e6b4; --accent-deep:#123d32; --danger:#ffc3b9; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; background:radial-gradient(circle at 90% 0%,#1b3b46 0%,transparent 38%), var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; line-height:1.45; }
+    button,input,select { font:inherit; }
+    button { cursor:pointer; }
+    .shell { max-width:1040px; margin:0 auto; padding:22px 18px 70px; }
+    .nav { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:46px; }
+    .brand { font-weight:800; letter-spacing:-.04em; font-size:1.25rem; }
+    .brand span { color:var(--accent); }
+    .pill { border:1px solid #477869; color:#a8f6d1; background:#18382f; border-radius:99px; padding:6px 11px; font-size:.78rem; font-weight:700; }
+    .hero { margin-bottom:28px; }
+    .eyebrow { color:var(--accent); font-weight:800; letter-spacing:.12em; text-transform:uppercase; font-size:.75rem; }
+    h1 { font-size:clamp(2.1rem,6vw,3.9rem); line-height:1.08; letter-spacing:-.055em; margin:9px 0 14px; max-width:720px; }
+    .intro { max-width:665px; font-size:1.04rem; color:var(--muted); margin:0; }
+    .layout { display:grid; grid-template-columns:minmax(0,1fr) 280px; align-items:start; gap:18px; }
+    .panel { background:rgba(21,35,50,.95); border:1px solid var(--stroke); border-radius:20px; padding:25px; box-shadow:0 13px 30px #030d1730; }
+    .section-head { display:flex; align-items:center; justify-content:space-between; gap:15px; margin:0 0 17px; }
+    h2 { margin:0; font-size:1.26rem; letter-spacing:-.025em; }
+    .step { color:var(--accent); font-size:.82rem; font-weight:700; }
+    .helper { font-size:.89rem; color:var(--muted); margin:6px 0 20px; }
+    .inputs { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+    label.field { display:block; color:#d4e3e6; font-weight:650; font-size:.89rem; }
+    .field input,.field select { display:block; margin-top:8px; width:100%; min-width:0; min-height:48px; border:1px solid #536474; border-radius:11px; outline:none; background:#0c1925; color:var(--text); padding:10px 12px; }
+    .field input:focus,.field select:focus { border-color:var(--accent); box-shadow:0 0 0 3px #72e6b427; }
+    hr { border:0; height:1px; background:var(--stroke); margin:26px 0; }
+    .progress-row { display:flex; justify-content:space-between; gap:12px; align-items:center; font-size:.85rem; color:var(--muted); margin:10px 0 8px; }
+    #progressCount { color:var(--accent); font-weight:800; }
+    .track { height:8px; border-radius:100px; overflow:hidden; background:#334353; margin-bottom:19px; }
+    .fill { height:100%; width:0%; background:linear-gradient(90deg,#36a993,var(--accent)); border-radius:100px; transition:width .2s; }
+    .angles { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .angle { position:relative; min-width:0; border:1px dashed #60717f; background:#10202d; border-radius:13px; padding:9px; min-height:161px; display:flex; flex-direction:column; text-align:left; }
+    .angle.filled { border:1px solid #55b794; background:#14372f; }
+    .thumbnail { width:100%; height:92px; border-radius:9px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#203344; color:#77919b; }
+    .thumbnail svg { width:26px; height:26px; }
+    .thumbnail img { width:100%; height:100%; object-fit:cover; }
+    .angle-label { display:flex; gap:6px; align-items:center; justify-content:space-between; color:#ecf7f5; font-weight:700; font-size:.8rem; margin:9px 1px 0; }
+    .status-icon { color:var(--accent); display:none; }
+    .filled .status-icon { display:inline; }
+    .angle input { display:none; }
+    .action { border:0; display:block; width:100%; color:#092a23; background:var(--accent); font-weight:800; border-radius:12px; padding:15px; min-height:50px; margin-top:22px; }
+    .action:hover { background:#a0f0cf; }
+    .secondary { border:1px solid #536474; color:var(--text); background:transparent; padding:10px 14px; font-weight:650; border-radius:10px; }
+    .privacy { font-size:.79rem; color:var(--muted); margin:13px 0 0; }
+    .side-title { font-size:1rem; margin-bottom:12px; }
+    .side-list { padding-left:19px; margin:0; font-size:.9rem; color:#ccdadc; }
+    .side-list li { margin:0 0 13px; }
+    .note { margin-top:20px; padding:15px; background:#233a35; border:1px solid #4b7664; border-radius:13px; font-size:.86rem; color:#c3efda; }
+    .result { margin-top:20px; background:#10392e; border:1px solid #63bb97; padding:17px; border-radius:13px; }
+    .result h3 { margin:0 0 6px; color:#9af3c8; }
+    .result p { margin:0 0 11px; color:#d1f5e3; }
+    .result[hidden],.error[hidden] { display:none; }
+    .error { margin:15px 0 0; color:var(--danger); font-size:.9rem; font-weight:650; }
+    footer { font-size:.82rem; color:#8ea5ac; text-align:center; margin-top:28px; }
+    @media (max-width:760px) { .nav { margin-bottom:32px; } .layout { grid-template-columns:1fr; } .panel { padding:18px; } .angles { grid-template-columns:repeat(2,minmax(0,1fr)); } .inputs { grid-template-columns:1fr; } .side { order:2; } }
+    @media (max-width:355px) { .angles { gap:8px; } .angle { min-height:145px; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="nav">
+      <div class="brand">Waste<span>Vision</span> <span aria-hidden="true">✦</span></div>
+      <div class="pill">Prototype v1</div>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">Community-powered AI research</div>
+      <h1>Help our machine learn to recognize waste.</h1>
+      <p class="intro">Choose one item, name it, and photograph the <strong>same piece of trash</strong> from six angles. Together, we'll build a better dataset for an automated waste segregation machine.</p>
+    </section>
+
+    <div class="layout">
+      <main class="panel">
+        <div class="section-head"><h2>Describe your trash</h2><span class="step">STEP 01</span></div>
+        <div class="inputs">
+          <label class="field" for="itemName">Object name
+            <input id="itemName" type="text" maxlength="70" autocomplete="off" placeholder="e.g. Empty water bottle" />
+          </label>
+          <label class="field" for="category">Waste category
+            <select id="category">
+              <option value="">Select category</option>
+              <option value="Plastic">Plastic</option>
+              <option value="Paper">Paper</option>
+              <option value="Metal">Metal</option>
+              <option value="Residual">Residual / Other</option>
+            </select>
+          </label>
+        </div>
+        <hr />
+        <div class="section-head"><h2>Capture six angles</h2><span class="step">STEP 02</span></div>
+        <p class="helper">Tap each box to use your camera or select a photo. Keep the same item in all six pictures. Avoid showing people's faces or personal information.</p>
+        <div class="progress-row"><span>Photo set progress</span><span id="progressCount">0 / 6 photos</span></div>
+        <div class="track" role="progressbar" aria-label="Photo set progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" id="progressTrack"><div id="progressFill" class="fill"></div></div>
+        <div class="angles" id="angles"></div>
+        <p class="error" id="error" role="alert" hidden></p>
+        <button class="action" id="reviewBtn" type="button">Review my photo set →</button>
+        <div class="result" id="result" aria-live="polite" hidden>
+          <h3>✓ Your photo set is ready!</h3>
+          <p id="resultText"></p>
+          <p><strong>Prototype only:</strong> Your photos have NOT been uploaded or saved. Cloud submission will be added in Step 2.</p>
+          <button class="secondary" id="resetBtn" type="button">Start another item</button>
+        </div>
+        <p class="privacy">🔒 This first version previews images only on your device. No images are sent to a server.</p>
+      </main>
+
+      <aside class="panel side">
+        <h2 class="side-title">For better training photos</h2>
+        <ol class="side-list">
+          <li>Photograph <strong>one physical item</strong> per set.</li>
+          <li>Show the entire object, without cutting it off.</li>
+          <li>Take front, back, left, right, top, and angled views.</li>
+          <li>Use clear lighting and an uncluttered background.</li>
+          <li>For now, use clean and dry items. Don't handle sharp or hazardous waste.</li>
+        </ol>
+        <div class="note"><strong>Next step:</strong> We'll connect secure image storage, add an approval queue, and make the Submit button actually save the set for AI training.</div>
+      </aside>
+    </div>
+    <footer>WasteVision — AI-assisted waste segregation research prototype</footer>
+  </div>
+
+  <script>
+    'use strict';
+    const views = [
+      ['front','Front view'], ['back','Back view'],
+      ['left','Left side'], ['right','Right side'],
+      ['top','Top view'], ['angled','45° angle']
+    ];
+    const selected = Object.fromEntries(views.map(([key]) => [key, null]));
+    const objectUrls = Object.fromEntries(views.map(([key]) => [key, null]));
+    const anglesContainer = document.getElementById('angles');
+    const error = document.getElementById('error');
+    const result = document.getElementById('result');
+    const cameraSvg = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4H9L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-3-3z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+
+    function updateProgress() {
+      const count = views.filter(([key]) => Boolean(selected[key])).length;
+      document.getElementById('progressCount').textContent = `${count} / 6 photos`;
+      document.getElementById('progressFill').style.width = `${count / 6 * 100}%`;
+      document.getElementById('progressTrack').setAttribute('aria-valuenow', String(count));
+    }
+    function clearError() { error.hidden = true; error.textContent = ''; }
+    function invalidateReview() { result.hidden = true; clearError(); }
+    function buildAngle([key, label]) {
+      const card = document.createElement('div');
+      card.className = 'angle';
+      const preview = document.createElement('div');
+      preview.className = 'thumbnail';
+      preview.innerHTML = cameraSvg;
+      const labelRow = document.createElement('div');
+      labelRow.className = 'angle-label';
+      const caption = document.createElement('span');
+      caption.textContent = label;
+      const check = document.createElement('span');
+      check.textContent = '✓'; check.className = 'status-icon';
+      labelRow.append(caption, check);
+      const input = document.createElement('input');
+      input.type = 'file'; input.accept = 'image/*'; input.setAttribute('capture', 'environment');
+      input.setAttribute('aria-label', `Take or select a photo for ${label}`);
+      input.addEventListener('change', () => {
+        const file = input.files && input.files[0];
+        if (!file) return;
+        if (!file.type.startsWith('image/')) { showError('Please select an image file.'); input.value=''; return; }
+        if (file.size > 10 * 1024 * 1024) { showError('Each photo must be 10 MB or smaller.'); input.value=''; return; }
+        if (objectUrls[key]) URL.revokeObjectURL(objectUrls[key]);
+        selected[key] = file;
+        objectUrls[key] = URL.createObjectURL(file);
+        const img = document.createElement('img');
+        img.src = objectUrls[key]; img.alt = `Preview of ${label}`;
+        preview.replaceChildren(img);
+        card.classList.add('filled');
+        invalidateReview(); updateProgress();
+      });
+      card.addEventListener('click', (event) => { if (event.target !== input) input.click(); });
+      card.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); input.click(); } });
+      card.tabIndex = 0; card.setAttribute('role', 'button');
+      card.setAttribute('aria-label', `Choose image for ${label}`);
+      card.append(preview, labelRow, input);
+      anglesContainer.append(card);
+    }
+    function showError(message) { error.textContent = message; error.hidden = false; result.hidden = true; }
+    views.forEach(buildAngle);
+    document.getElementById('itemName').addEventListener('input', invalidateReview);
+    document.getElementById('category').addEventListener('change', invalidateReview);
+    document.getElementById('reviewBtn').addEventListener('click', () => {
+      clearError();
+      const name = document.getElementById('itemName').value.trim();
+      const category = document.getElementById('category').value;
+      if (name.length < 2) { showError('Enter the name of the trash item first.'); document.getElementById('itemName').focus(); return; }
+      if (!category) { showError('Select a waste category first.'); document.getElementById('category').focus(); return; }
+      const missing = views.filter(([key]) => !selected[key]).map(([,label])=>label);
+      if (missing.length) { showError(`Please add the missing photo(s): ${missing.join(', ')}.`); return; }
+      document.getElementById('resultText').textContent = `${name} • ${category} • 6 different camera angles.`;
+      result.hidden = false;
+      result.scrollIntoView({behavior:'smooth',block:'nearest'});
+    });
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      for (const [key] of views) { if (objectUrls[key]) URL.revokeObjectURL(objectUrls[key]); objectUrls[key] = null; selected[key] = null; }
+      anglesContainer.replaceChildren(); views.forEach(buildAngle);
+      document.getElementById('itemName').value=''; document.getElementById('category').value='';
+      result.hidden = true; clearError(); updateProgress();
+      document.getElementById('itemName').focus();
+    });
+    window.addEventListener('pagehide',()=>{ for(const url of Object.values(objectUrls)) if(url) URL.revokeObjectURL(url); });
+  </script>
+</body>
+</html>
